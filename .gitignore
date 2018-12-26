@@ -1,0 +1,23 @@
+# Gradle generated stuff
+.gradle/
+
+# IntelliJ project folder
+.idea/
+
+# Generated classes
+build/
+out/
+
+# Java classes
+*.class
+
+# IntelliJ project files
+*.iml
+*.ipr
+*.iws
+
+# Config files
+*.yaml
+
+# Restore possible ignores that affected the wrapper folder
+!gradle/wrapper/**
