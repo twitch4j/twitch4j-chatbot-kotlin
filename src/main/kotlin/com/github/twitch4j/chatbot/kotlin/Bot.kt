@@ -9,6 +9,7 @@ import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnDonation
 import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnFollow
 import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnSubscription
 import com.github.twitch4j.chatbot.kotlin.features.WriteChannelChatToConsole
+import kotlin.system.exitProcess
 
 object Bot {
 
@@ -37,13 +38,19 @@ object Bot {
 
     /** Load the configuration from the config.yaml file */
     private fun loadConfiguration(): Configuration {
+        val config: Configuration
         val classloader = Thread.currentThread().contextClassLoader
         val inputStream = classloader.getResourceAsStream("config.yaml")
-
         val mapper = ObjectMapper(YAMLFactory())
 
-        return mapper.readValue(inputStream, Configuration::class.java)
+        try {
+            config = mapper.readValue(inputStream, Configuration::class.java)
+        } catch (ex: Exception) {
+            println("Unable to load configuration... Exiting")
+            exitProcess(1)
+        }
 
+        return config
     }
 
     /** Create the client */
