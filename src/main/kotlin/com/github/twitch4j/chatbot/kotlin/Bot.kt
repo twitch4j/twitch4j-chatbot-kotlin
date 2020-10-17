@@ -3,6 +3,7 @@ package com.github.twitch4j.chatbot.kotlin
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
+import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnDonation
@@ -22,10 +23,11 @@ object Bot {
 
     /** Register all features */
     fun registerFeatures() {
-        twitchClient.eventManager.registerListener(WriteChannelChatToConsole)
-        twitchClient.eventManager.registerListener(ChannelNotificationOnFollow)
-        twitchClient.eventManager.registerListener(ChannelNotificationOnSubscription)
-        twitchClient.eventManager.registerListener(ChannelNotificationOnDonation)
+        val eventHandler = twitchClient.eventManager.getEventHandler(SimpleEventHandler::class.java)
+        WriteChannelChatToConsole(eventHandler)
+        ChannelNotificationOnFollow(eventHandler)
+        ChannelNotificationOnSubscription(eventHandler)
+        ChannelNotificationOnDonation(eventHandler)
     }
 
     /** Start the bot, connecting it to every channel specified in the configuration */
@@ -90,9 +92,6 @@ object Bot {
 
         // Build the client out of the configured builder
         client = clientBuilder.build()
-
-        // Register this class to receive events using the EventSubscriber Annotation
-        client.eventManager.registerListener(this)
 
         return client
     }
