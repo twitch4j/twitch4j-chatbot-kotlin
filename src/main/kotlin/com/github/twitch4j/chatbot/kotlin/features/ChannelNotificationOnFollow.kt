@@ -1,8 +1,6 @@
 package com.github.twitch4j.chatbot.kotlin.features
 
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
-import com.github.philippheuer.events4j.simple.domain.EventSubscriber
-import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
 import com.github.twitch4j.chat.events.channel.FollowEvent
 
 class ChannelNotificationOnFollow(eventHandler: SimpleEventHandler) {
